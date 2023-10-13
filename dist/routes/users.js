@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const users_1 = require("../controller/users");
+const passwordReset_1 = require("../utils/passwordReset");
+const updateVerified_1 = require("../utils/updateVerified");
+const auth_1 = require("../middleware/auth");
+const router = express_1.default.Router();
+router.put('/changepassword', auth_1.authenticateToken, users_1.changePassword);
+router.post('/signup', users_1.createUser);
+router.post('/login', users_1.loginController);
+router.get('/emailval/:id/:token', updateVerified_1.updateVerified);
+router.post('/forgot-password', passwordReset_1.requestPasswordResetController);
+router.get('/get-password/:userId/:token', passwordReset_1.getPasswordController);
+router.put('/reset-password/:id', passwordReset_1.resetPasswordController);
+router.post('/book-trip/:routeId', auth_1.authenticateToken, users_1.bookTrip);
+router.get('/transaction-history', auth_1.authenticateToken, users_1.transactionHistory);
+router.get('/getAllPassengerTrips', auth_1.authenticateToken, users_1.getAllPassengerTrips);
+router.post('/paystack/pay', auth_1.authenticateToken, users_1.engagePayment);
+router.get('/paystack/callback', users_1.getReference);
+router.get('/getuser', auth_1.authenticateToken, users_1.getUser);
+exports.default = router;
